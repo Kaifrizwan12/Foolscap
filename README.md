@@ -153,14 +153,14 @@ workspaces/{wid}
 
 ## 🧪 The honest bits
 
-Because I'd rather you hear it from me:
+Let's be real about what's hard. None of it scares me, and I'm going to work through every one of these.
 
-- **Gemini can genuinely watch video.** Files up to 2 GB through its Files API, small clips inline, public YouTube links directly. A minute of reel costs roughly 100 to 300 tokens per second depending on resolution, which is pocket change.
-- **But a TikTok or Instagram *link* isn't a video.** Gemini won't pull from arbitrary links, and Meta's embed API only returns embed code. So v1 is "record it, share the video in". YouTube links work as-is.
-- **Bulk scraping is a different beast.** Platforms ban automated access in their terms. The Radar should run on licensed data or official routes, not a scraper I duct-tape together. Get proper legal advice before you ship it.
-- **Firebase needs the Blaze plan** for Functions and Storage. Set budget alerts on day one. Future you says thanks.
-- **Roman Urdu + English is the real exam.** There's no standard spelling and everyone mixes languages mid-sentence. Test it on your own clips before trusting it.
 
+- **The video part is solved.** Gemini can genuinely watch footage: files up to 2 GB through its Files API, small clips inline, public YouTube links directly. A minute of reel costs roughly 100 to 300 tokens per second depending on resolution, which is pocket change.
+- **The link part isn't.** A TikTok or Instagram link is just an address. Gemini won't pull from arbitrary links, and Meta's embed API only hands back embed code. So v1 goes "record it, share the video in", and YouTube links work as they are.
+- **Bulk scraping is its own beast.** Platforms ban automated access in their terms, so the Radar will run on licensed data or official routes, not a scraper held together with duct tape. Legal advice comes before launch, not after.
+- **Firebase wants the Blaze plan** for Functions and Storage. Budget alerts go on day one. Future me says thanks.
+- **Roman Urdu mixed with English is the real exam.** No standard spelling, and everyone switches languages mid-sentence. I'll test it on real clips before I trust it, and before I promise it.
 <br/>
 
 ## 🛤 The plan, loosely
@@ -202,7 +202,6 @@ You'll need a Firebase project on Blaze and a Gemini API key.
 
 *The machine reads. You write. The audience can tell.*
 
-**Built by [Muhammad Kaif Nathani](https://github.com/kaifrizwan12)** · MIT
 
 📜
 
