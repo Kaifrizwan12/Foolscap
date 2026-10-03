@@ -63,7 +63,7 @@ Easiest way to explain it is to walk through a day.
 
 **9:00.** New client: a car brand. You make a workspace, drop in their tone, the words they never say, the disclaimers legal makes you add, and the model specs. This is the **Brand Bible**, and it quietly checks every script you write against it. Plain rules, no AI judgment. *The client's lawyer reads your script before you do.*
 
-**9:30.** You go hunting. Share a reel from Instagram, TikTok or YouTube straight into Foolscap from your phone. It keeps a snapshot, so when the creator deletes it, you still have it. It pulls the transcript, the on-screen text, the caption. It even copes with that Urdu / Roman Urdu / English mashup that real people actually speak. Everything is searchable by anything *said* or *shown*.
+**9:30.** You go hunting. You find a reel on Instagram, TikTok or YouTube, record it (or hit the one-tap record button), and it lands in Foolscap with the link attached. It keeps the footage, so when the creator deletes the original, you still have it. It pulls the transcript, the on-screen text, the caption. It even copes with that Urdu / Roman Urdu / English mashup that real people actually speak. Everything is searchable by anything *said* or *shown*.
 *If you saw it, you own the receipt.*
 
 **10:15.** You open **X-Ray** on the reel you love. It breaks the video into beats: how long the hook lasts, how fast the cuts come, when the text appears, how many words a minute, where the pauses are. It tells you how far this video outran its own account's normal numbers. And there's one field it will never fill in: **"Why it worked."** That one is yours.
@@ -96,13 +96,33 @@ Some things are further out but they're the ones I'm most excited about.
 
 <br/>
 
+## 🎞 How a reel gets in
+
+Here's the thing nobody tells you: a link is just an address. The machine can't watch an address. It needs the actual footage. So Foolscap takes reels in two ways, and keeps the link either way.
+
+**Record it.** Play the reel, screen-record it with your phone's built-in recorder, and share the video into Foolscap. That's v1, and it needs zero custom magic. Later there's a **one-tap Record** button inside the app that does it for you.
+
+**Paste the link too.** The link stays on file for the source, for spotting duplicates, and for showing the original embed. It just isn't what the analysis runs on.
+
+A few things worth knowing:
+
+- Android records through MediaProjection and iOS through ReplayKit. Recording *other* apps on iOS needs a Broadcast Extension.
+- Audio is the real test. Android 10+ can capture it internally, but some apps can block it. Test on a real phone with real reels before promising anything.
+- Gemini only samples one frame a second, so a screen recording is plenty for X-Ray. It's the Expression Vault clips that want the best quality.
+- Recordings carry the app's buttons and captions, which muddy the on-screen text. A quick crop step fixes that.
+- YouTube is the exception: public links work directly.
+
+> **Record it. Keep the link. Own the receipt.**
+
+<br/>
+
 ## 🔧 Under the hood
 
-Plain-English version. The Flutter app catches what you share and uploads it. A Node.js Cloud Function wakes up, hands the video to Gemini, and gets back a strictly shaped bundle of facts: timestamps, hook type, cut counts, labels. All of it lands in Firestore. The writing room reads from there.
+Plain-English version. The Flutter app catches the recording you share (or record) and uploads it. A Node.js Cloud Function wakes up, hands the video to Gemini, and gets back a strictly shaped bundle of facts: timestamps, hook type, cut counts, labels. All of it lands in Firestore. The writing room reads from there.
 
 ```mermaid
 flowchart LR
-    A["📱 Flutter<br/>share-sheet capture"] --> B[("Cloud Storage<br/>snapshots")]
+    A["📱 Flutter<br/>record or share"] --> B[("Cloud Storage<br/>snapshots")]
     B --> C["⚙️ Node.js function"]
     C --> D["🔭 Gemini<br/>analyst only"]
     D --> E[("Firestore")]
@@ -136,7 +156,7 @@ workspaces/{wid}
 Because I'd rather you hear it from me:
 
 - **Gemini can genuinely watch video.** Files up to 2 GB through its Files API, small clips inline, public YouTube links directly. A minute of reel costs roughly 100 to 300 tokens per second depending on resolution, which is pocket change.
-- **But a TikTok or Instagram *link* isn't a video.** Gemini won't pull from arbitrary links, and Meta's embed API only returns embed code. So v1 is "bring the file": save the reel, share it into Foolscap. YouTube links work as-is.
+- **But a TikTok or Instagram *link* isn't a video.** Gemini won't pull from arbitrary links, and Meta's embed API only returns embed code. So v1 is "record it, share the video in". YouTube links work as-is.
 - **Bulk scraping is a different beast.** Platforms ban automated access in their terms. The Radar should run on licensed data or official routes, not a scraper I duct-tape together. Get proper legal advice before you ship it.
 - **Firebase needs the Blaze plan** for Functions and Storage. Set budget alerts on day one. Future you says thanks.
 - **Roman Urdu + English is the real exam.** There's no standard spelling and everyone mixes languages mid-sentence. Test it on your own clips before trusting it.
@@ -152,7 +172,7 @@ Because I'd rather you hear it from me:
 5. **The Radar.** Licensed data, outlier alerts, comment mining.
 6. **The Set.** Teleprompter, take log, results loop, Human Ink.
 
-<br/>
+<!-- <br/>
 
 ## 🚀 Run it
 
@@ -174,7 +194,7 @@ You'll need a Firebase project on Blaze and a Gemini API key.
 
 <br/>
 
----
+--- -->
 
 <div align="center">
 
