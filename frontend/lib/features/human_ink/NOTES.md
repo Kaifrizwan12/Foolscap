@@ -1,0 +1,1 @@
+Empty on purpose — Phase 6.5 in docs/FEATURE_PLAN.md. This feature has almost no frontend state of its own: it's a PDF generated server-side from `scripts/{sid}/versions` history that already exists by Phase 2. The frontend side is just a button + signed-URL download.

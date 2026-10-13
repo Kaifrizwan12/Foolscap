@@ -1,0 +1,20 @@
+rules_version = '2';
+
+// See docs/SECURITY_PRACTICES.md. Upload paths are scoped per workspace;
+// only authenticated members of that workspace may write.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /workspaces/{workspaceId}/references/{referenceId}/{fileName} {
+      allow read: if request.auth != null &&
+        request.auth.uid in firestore.get(/databases/(default)/documents/workspaces/$(workspaceId)).data.memberUids;
+      allow write: if request.auth != null &&
+        request.auth.uid in firestore.get(/databases/(default)/documents/workspaces/$(workspaceId)).data.memberUids &&
+        request.resource.size < 2 * 1024 * 1024 * 1024; // 2GB, matches Gemini Files API limit
+    }
+
+    match /workspaces/{workspaceId}/expressionClips/{clipId}/{fileName} {
+      allow read, write: if request.auth != null &&
+        request.auth.uid in firestore.get(/databases/(default)/documents/workspaces/$(workspaceId)).data.memberUids;
+    }
+  }
+}

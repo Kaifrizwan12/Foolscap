@@ -1,0 +1,58 @@
+name: foolscap
+description: Paper for people who write. The machine reads, you write.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # navigation
+  go_router: ^14.0.0
+
+  # state management (see docs/STATE_MANAGEMENT.md)
+  provider: ^6.1.0
+
+  # networking (dio over http: see docs/ASSUMPTIONS_AND_DECISIONS.md)
+  dio: ^5.4.0
+
+  # firebase
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
+  cloud_firestore: ^5.0.0
+  firebase_storage: ^12.0.0
+
+  # storage
+  shared_preferences: ^2.2.0
+  flutter_secure_storage: ^9.0.0
+
+  # capture intake (Phase 1, see docs/FEATURE_PLAN.md)
+  receive_sharing_intent: ^1.8.0
+
+  # misc
+  uuid: ^4.4.0
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/images/brand/
+    - assets/images/placeholders/
+    - assets/images/illustrations/
+    - assets/json/
+    - assets/lottie/
+
+  # fonts:
+  #   - family: FoolscapDisplay
+  #     fonts:
+  #       - asset: assets/fonts/FoolscapDisplay-Regular.ttf

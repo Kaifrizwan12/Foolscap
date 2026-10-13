@@ -1,0 +1,1 @@
+Do not build anything here yet. Phase 5 in docs/FEATURE_PLAN.md is legally gated — README is explicit that scraping social platforms violates their ToS. No code until a licensed data source is contracted and legal has signed off.

@@ -1,0 +1,1 @@
+Empty on purpose — Phase 4 in docs/FEATURE_PLAN.md (Brand Bible linter, pillar heatmap). The Brand Bible *data model* already exists under `features/workspaces` (Phase 0.3) — this feature is the UI/linting logic layered on top of that existing data, not a new data model.

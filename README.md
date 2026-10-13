@@ -118,12 +118,12 @@ A few things worth knowing:
 
 ## 🔧 Under the hood
 
-Plain-English version. The Flutter app catches the recording you share (or record) and uploads it. A Node.js Cloud Function wakes up, hands the video to Gemini, and gets back a strictly shaped bundle of facts: timestamps, hook type, cut counts, labels. All of it lands in Firestore. The writing room reads from there.
+Plain-English version. The Flutter app catches the recording you share (or record) and uploads it. A plain Node.js server — just a regular backend, no Cloud Functions, running wherever's cheapest — picks it up, hands the video to Gemini, and gets back a strictly shaped bundle of facts: timestamps, hook type, cut counts, labels. All of it lands in Firestore. The writing room reads from there.
 
 ```mermaid
 flowchart LR
     A["📱 Flutter<br/>record or share"] --> B[("Cloud Storage<br/>snapshots")]
-    B --> C["⚙️ Node.js function"]
+    B --> C["⚙️ Node.js server"]
     C --> D["🔭 Gemini<br/>analyst only"]
     D --> E[("Firestore")]
     E --> F["✍️ Writing Room<br/>zero AI"]
@@ -132,7 +132,7 @@ flowchart LR
 
 **The AI firewall.** The no-AI promise isn't a setting, it's architecture:
 
-1. Gemini only gets called from server-side functions. The key never ships in the app.
+1. Gemini only gets called from the backend server. The key never ships in the app.
 2. Every call uses a strict schema made of enums, numbers, timestamps and short labels. There is no field that *can* hold a generated script.
 3. The writing room doesn't import an AI client at all. Not hidden. Not off. Absent.
 4. Every edit is logged with its author, which is where Human Ink comes from.

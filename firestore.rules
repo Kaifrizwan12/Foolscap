@@ -1,0 +1,90 @@
+rules_version = '2';
+
+// See docs/SECURITY_PRACTICES.md and docs/TECHNICAL_DEEP_DIVE.md section 4
+// (the write-ownership table) before adding a new collection's rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isWorkspaceMember(workspaceId) {
+      return isSignedIn() &&
+        request.auth.uid in get(/databases/$(database)/documents/workspaces/$(workspaceId)).data.memberUids;
+    }
+
+    match /users/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow write: if false; // backend only
+    }
+
+    match /workspaces/{workspaceId} {
+      allow read: if isWorkspaceMember(workspaceId);
+      allow create, update, delete: if false; // backend only — role mutation must be service-checked
+
+      match /clients/{clientId} {
+        allow read: if isWorkspaceMember(workspaceId);
+        allow write: if false; // backend only, see controllers/clients.controller.js
+      }
+
+      match /references/{referenceId} {
+        allow read: if isWorkspaceMember(workspaceId);
+        // Only tags/folderIds are client-writable; status/analysis/transcript
+        // are machine-authored and have no permissive rule here on purpose.
+        allow update: if isWorkspaceMember(workspaceId) &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['tags', 'folderIds', 'updatedAt']);
+        allow create, delete: if false; // created by the backend's register-upload endpoint only
+
+        match /versions/{versionId} {
+          allow read: if isWorkspaceMember(workspaceId);
+          allow write: if false; // backend only — authorUid/createdAt must be server-stamped
+        }
+      }
+
+      match /folders/{folderId} {
+        allow read: if isWorkspaceMember(workspaceId);
+        allow create, update, delete: if isWorkspaceMember(workspaceId);
+      }
+
+      match /scripts/{scriptId} {
+        allow read: if isWorkspaceMember(workspaceId);
+        allow create, update: if isWorkspaceMember(workspaceId);
+        allow delete: if false; // use status=graveyard instead, see docs/FEATURE_PLAN.md Phase 6.4
+
+        match /versions/{versionId} {
+          allow read: if isWorkspaceMember(workspaceId);
+          allow write: if false; // backend only, see docs/TECHNICAL_DEEP_DIVE.md section 4
+        }
+      }
+
+      match /pitches/{pitchId} {
+        allow read, write: if isWorkspaceMember(workspaceId);
+        // Public, unauthenticated access goes through the backend's
+        // by-token endpoints (docs/TECHNICAL_DEEP_DIVE.md section 5), never
+        // a direct Firestore rule for anonymous readers/writers.
+
+        match /comments/{commentId} {
+          allow read, write: if isWorkspaceMember(workspaceId);
+        }
+      }
+
+      match /takes/{takeId} {
+        allow read, write: if isWorkspaceMember(workspaceId);
+      }
+
+      match /retros/{retroId} {
+        allow read, write: if isWorkspaceMember(workspaceId);
+      }
+
+      match /expressionClips/{clipId} {
+        allow read, write: if isWorkspaceMember(workspaceId);
+      }
+    }
+
+    match /invites/{token} {
+      allow read, write: if false; // backend only, see repositories/invites.repository.js
+    }
+  }
+}

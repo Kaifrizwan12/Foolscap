@@ -1,0 +1,34 @@
+# Secrets — never commit these
+.env
+.env.*
+!*.env.example
+*serviceAccountKey*.json
+*firebase-adminsdk*.json
+
+# Node
+backend/node_modules/
+backend/npm-debug.log*
+
+# Flutter
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/.packages
+frontend/build/
+frontend/ios/Pods/
+frontend/ios/Flutter/Flutter.framework
+frontend/ios/Flutter/Flutter.podspec
+frontend/android/.gradle/
+frontend/android/local.properties
+frontend/**/*.g.dart
+frontend/lib/firebase_options*.dart
+
+# Firebase
+.firebase/
+.firebaserc
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# OS
+.DS_Store

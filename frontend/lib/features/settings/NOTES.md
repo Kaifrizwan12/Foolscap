@@ -1,0 +1,1 @@
+Empty on purpose. Needed early in practice (speaking-pace WPM setting backs the live timer in Phase 2.2) even though it's not its own numbered phase — build the speaking-pace setting alongside Phase 2, using `LocalCacheService` (shared_preferences, non-sensitive) per docs/FLUTTER_FULL_STACK_PLAYBOOK.md section 11.
